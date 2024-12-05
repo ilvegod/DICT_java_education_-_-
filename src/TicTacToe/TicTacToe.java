@@ -9,6 +9,34 @@ public class TicTacToe {
 
         if (input.length() == 9 && input.matches("[XO_]+")) {
             printBoard(input);
+
+            while (true) {
+                System.out.print("Enter the coordinates: ");
+                String[] coordinates = scanner.nextLine().split(" ");
+                if (coordinates.length != 2) {
+                    System.out.println("You should enter numbers!");
+                    continue;
+                }
+
+                try {
+                    int row = Integer.parseInt(coordinates[0]) - 1;
+                    int col = Integer.parseInt(coordinates[1]) - 1;
+
+                    if (row < 0 || row > 2 || col < 0 || col > 2) {
+                        System.out.println("Coordinates should be from 1 to 3!");
+                    } else {
+                        if (input.charAt(row * 3 + col) == 'X' || input.charAt(row * 3 + col) == 'O') {
+                            System.out.println("This cell is occupied! Choose another one!");
+                        } else {
+                            input = input.substring(0, row * 3 + col) + "X" + input.substring(row * 3 + col + 1);
+                            printBoard(input);
+                            break;
+                        }
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("You should enter numbers!");
+                }
+            }
         } else {
             System.out.println("Invalid input!");
         }
