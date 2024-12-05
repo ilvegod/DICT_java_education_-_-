@@ -98,5 +98,3 @@ public class CoffeeMachine {
         System.out.println("$" + money + " of money");
     }
 }
-
-
