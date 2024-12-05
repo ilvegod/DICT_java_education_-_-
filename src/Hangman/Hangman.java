@@ -8,9 +8,10 @@ public class Hangman {
         Random random = new Random();
 
         String wordToGuess = words[random.nextInt(words.length)];
+        String hint = wordToGuess.substring(0, 2) + "-".repeat(wordToGuess.length() - 2);
 
         System.out.println("HANGMAN");
-        System.out.print("Guess the word: > ");
+        System.out.println("Guess the word " + hint + ": > ");
         String userGuess = scanner.nextLine();
 
         if (userGuess.equalsIgnoreCase(wordToGuess)) {
