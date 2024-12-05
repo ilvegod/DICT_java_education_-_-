@@ -20,22 +20,24 @@ public class Hangman {
             String userGuess = scanner.nextLine().toLowerCase();
 
             if (guessedLetters.contains(userGuess)) {
-                System.out.println("You've already guessed that letter.");
+                System.out.println("No improvements");
                 continue;
             }
 
             guessedLetters += userGuess;
 
             if (wordToGuess.contains(userGuess)) {
+                boolean isUpdated = false;
                 for (int i = 0; i < wordToGuess.length(); i++) {
-                    if (wordToGuess.charAt(i) == userGuess.charAt(0)) {
+                    if (wordToGuess.charAt(i) == userGuess.charAt(0) && currentWord.charAt(i) == '-') {
                         currentWord.setCharAt(i, userGuess.charAt(0));
+                        isUpdated = true;
                     }
                 }
                 System.out.println(currentWord);
-                if (currentWord.toString().equals(wordToGuess)) {
-                    System.out.println("You survived!");
-                    break;
+                if (!isUpdated) {
+                    attemptsLeft--;
+                    System.out.println("That letter doesn't appear in the word");
                 }
             } else {
                 attemptsLeft--;
@@ -43,9 +45,15 @@ public class Hangman {
                 System.out.println(currentWord);
             }
 
+            if (currentWord.toString().equals(wordToGuess)) {
+                System.out.println("You guessed the word!");
+                System.out.println("You survived!");
+                break;
+            }
+
             if (attemptsLeft == 0) {
-                System.out.println("Thanks for playing!");
-                System.out.println("We'll see how well you did in the next stage");
+                System.out.println("You lost!");
+                break;
             }
         }
 
