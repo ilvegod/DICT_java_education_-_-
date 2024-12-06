@@ -9,6 +9,8 @@ public class MatrixProcessing {
             System.out.println("2. Multiply matrix by a constant");
             System.out.println("3. Multiply matrices");
             System.out.println("4. Transpose matrix");
+            System.out.println("5. Calculate a determinant");
+            System.out.println("6. Inverse matrix");
             System.out.println("0. Exit");
             System.out.print("Your choice: ");
             int choice = scanner.nextInt();
@@ -148,76 +150,158 @@ public class MatrixProcessing {
                     }
                 }
 
+                int[][] result = new int[m][n];
                 if (transposeChoice == 1) {
-                    int[][] result = new int[m][n];
                     for (int i = 0; i < n; i++) {
                         for (int j = 0; j < m; j++) {
                             result[j][i] = matrix[i][j];
                         }
                     }
-
-                    System.out.println("The result is:");
-                    for (int i = 0; i < m; i++) {
-                        for (int j = 0; j < n; j++) {
-                            System.out.print(result[i][j] + " ");
-                        }
-                        System.out.println();
-                    }
-                }
-
-                if (transposeChoice == 2) {
-                    int[][] result = new int[m][n];
+                } else if (transposeChoice == 2) {
                     for (int i = 0; i < n; i++) {
                         for (int j = 0; j < m; j++) {
                             result[m - j - 1][n - i - 1] = matrix[i][j];
                         }
                     }
-
-                    System.out.println("The result is:");
-                    for (int i = 0; i < m; i++) {
-                        for (int j = 0; j < n; j++) {
-                            System.out.print(result[i][j] + " ");
-                        }
-                        System.out.println();
-                    }
-                }
-
-                if (transposeChoice == 3) {
-                    int[][] result = new int[n][m];
+                } else if (transposeChoice == 3) {
                     for (int i = 0; i < n; i++) {
                         for (int j = 0; j < m; j++) {
                             result[i][m - j - 1] = matrix[i][j];
                         }
                     }
-
-                    System.out.println("The result is:");
-                    for (int i = 0; i < n; i++) {
-                        for (int j = 0; j < m; j++) {
-                            System.out.print(result[i][j] + " ");
-                        }
-                        System.out.println();
-                    }
-                }
-
-                if (transposeChoice == 4) {
-                    int[][] result = new int[n][m];
+                } else if (transposeChoice == 4) {
                     for (int i = 0; i < n; i++) {
                         for (int j = 0; j < m; j++) {
                             result[n - i - 1][j] = matrix[i][j];
                         }
                     }
+                }
 
+                System.out.println("The result is:");
+                for (int i = 0; i < m; i++) {
+                    for (int j = 0; j < n; j++) {
+                        System.out.print(result[i][j] + " ");
+                    }
+                    System.out.println();
+                }
+            }
+
+            if (choice == 5) {
+                System.out.print("Enter matrix size: ");
+                int n = scanner.nextInt();
+                int m = scanner.nextInt();
+
+                if (n != m) {
+                    System.out.println("The matrix must be square.");
+                    continue;
+                }
+
+                double[][] matrix = new double[n][m];
+                System.out.println("Enter matrix:");
+                for (int i = 0; i < n; i++) {
+                    for (int j = 0; j < m; j++) {
+                        matrix[i][j] = scanner.nextDouble();
+                    }
+                }
+
+                double determinant = calculateDeterminant(matrix, n);
+                System.out.println("The result is:");
+                System.out.println(determinant);
+            }
+
+            if (choice == 6) {
+                System.out.print("Enter matrix size: ");
+                int n = scanner.nextInt();
+                int m = scanner.nextInt();
+
+                if (n != m) {
+                    System.out.println("The matrix must be square.");
+                    continue;
+                }
+
+                double[][] matrix = new double[n][m];
+                System.out.println("Enter matrix:");
+                for (int i = 0; i < n; i++) {
+                    for (int j = 0; j < m; j++) {
+                        matrix[i][j] = scanner.nextDouble();
+                    }
+                }
+
+                double[][] inverseMatrix = calculateInverse(matrix, n);
+                if (inverseMatrix != null) {
                     System.out.println("The result is:");
                     for (int i = 0; i < n; i++) {
                         for (int j = 0; j < m; j++) {
-                            System.out.print(result[i][j] + " ");
+                            System.out.print(inverseMatrix[i][j] + " ");
                         }
                         System.out.println();
                     }
+                } else {
+                    System.out.println("The matrix is not invertible.");
+                }
+            }
+        }
+    }
+
+    public static double calculateDeterminant(double[][] matrix, int n) {
+        if (n == 2) {
+            return matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0];
+        }
+
+        double determinant = 0;
+        for (int i = 0; i < n; i++) {
+            double[][] subMatrix = new double[n - 1][n - 1];
+            for (int j = 1; j < n; j++) {
+                int k = 0;
+                for (int l = 0; l < n; l++) {
+                    if (l != i) {
+                        subMatrix[j - 1][k++] = matrix[j][l];
+                    }
+                }
+            }
+            determinant += Math.pow(-1, i) * matrix[0][i] * calculateDeterminant(subMatrix, n - 1);
+        }
+
+        return determinant;
+    }
+
+    public static double[][] calculateInverse(double[][] matrix, int n) {
+        double determinant = calculateDeterminant(matrix, n);
+        if (determinant == 0) {
+            return null;
+        }
+
+        double[][] adjoint = new double[n][n];
+        if (n == 2) {
+            adjoint[0][0] = matrix[1][1];
+            adjoint[0][1] = -matrix[0][1];
+            adjoint[1][0] = -matrix[1][0];
+            adjoint[1][1] = matrix[0][0];
+        } else {
+            for (int i = 0; i < n; i++) {
+                for (int j = 0; j < n; j++) {
+                    double[][] subMatrix = new double[n - 1][n - 1];
+                    for (int k = 0; k < n; k++) {
+                        if (k != i) {
+                            for (int l = 0; l < n; l++) {
+                                if (l != j) {
+                                    subMatrix[k < i ? k : k - 1][l < j ? l : l - 1] = matrix[k][l];
+                                }
+                            }
+                        }
+                    }
+                    adjoint[j][i] = Math.pow(-1, i + j) * calculateDeterminant(subMatrix, n - 1);
                 }
             }
         }
 
-        scanner.close();
+        double[][] inverseMatrix = new double[n][n];
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                inverseMatrix[i][j] = adjoint[i][j] / determinant;
+            }
+        }
+
+        return inverseMatrix;
     }
 }
