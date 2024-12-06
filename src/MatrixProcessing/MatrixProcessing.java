@@ -8,6 +8,7 @@ public class MatrixProcessing {
             System.out.println("1. Add matrices");
             System.out.println("2. Multiply matrix by a constant");
             System.out.println("3. Multiply matrices");
+            System.out.println("4. Transpose matrix");
             System.out.println("0. Exit");
             System.out.print("Your choice: ");
             int choice = scanner.nextInt();
@@ -125,6 +126,94 @@ public class MatrixProcessing {
                         System.out.print(result[i][j] + " ");
                     }
                     System.out.println();
+                }
+            }
+
+            if (choice == 4) {
+                System.out.println("1. Main diagonal");
+                System.out.println("2. Side diagonal");
+                System.out.println("3. Vertical line");
+                System.out.println("4. Horizontal line");
+                System.out.print("Your choice: ");
+                int transposeChoice = scanner.nextInt();
+
+                System.out.print("Enter matrix size: ");
+                int n = scanner.nextInt();
+                int m = scanner.nextInt();
+                int[][] matrix = new int[n][m];
+                System.out.println("Enter matrix:");
+                for (int i = 0; i < n; i++) {
+                    for (int j = 0; j < m; j++) {
+                        matrix[i][j] = scanner.nextInt();
+                    }
+                }
+
+                if (transposeChoice == 1) {
+                    int[][] result = new int[m][n];
+                    for (int i = 0; i < n; i++) {
+                        for (int j = 0; j < m; j++) {
+                            result[j][i] = matrix[i][j];
+                        }
+                    }
+
+                    System.out.println("The result is:");
+                    for (int i = 0; i < m; i++) {
+                        for (int j = 0; j < n; j++) {
+                            System.out.print(result[i][j] + " ");
+                        }
+                        System.out.println();
+                    }
+                }
+
+                if (transposeChoice == 2) {
+                    int[][] result = new int[m][n];
+                    for (int i = 0; i < n; i++) {
+                        for (int j = 0; j < m; j++) {
+                            result[m - j - 1][n - i - 1] = matrix[i][j];
+                        }
+                    }
+
+                    System.out.println("The result is:");
+                    for (int i = 0; i < m; i++) {
+                        for (int j = 0; j < n; j++) {
+                            System.out.print(result[i][j] + " ");
+                        }
+                        System.out.println();
+                    }
+                }
+
+                if (transposeChoice == 3) {
+                    int[][] result = new int[n][m];
+                    for (int i = 0; i < n; i++) {
+                        for (int j = 0; j < m; j++) {
+                            result[i][m - j - 1] = matrix[i][j];
+                        }
+                    }
+
+                    System.out.println("The result is:");
+                    for (int i = 0; i < n; i++) {
+                        for (int j = 0; j < m; j++) {
+                            System.out.print(result[i][j] + " ");
+                        }
+                        System.out.println();
+                    }
+                }
+
+                if (transposeChoice == 4) {
+                    int[][] result = new int[n][m];
+                    for (int i = 0; i < n; i++) {
+                        for (int j = 0; j < m; j++) {
+                            result[n - i - 1][j] = matrix[i][j];
+                        }
+                    }
+
+                    System.out.println("The result is:");
+                    for (int i = 0; i < n; i++) {
+                        for (int j = 0; j < m; j++) {
+                            System.out.print(result[i][j] + " ");
+                        }
+                        System.out.println();
+                    }
                 }
             }
         }
